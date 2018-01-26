@@ -1,0 +1,29 @@
+    ul.col3 
+{ 
+padding-right: : 0px !important; 
+padding-left: : 0px !important; 
+float: left !important; 
+padding-bottom: : 0px !important; 
+margin: : 15px 0px !important; 
+width: : 100% !important; 
+padding-top: : 0px !important; 
+list-style-type: : none  !important;
+} 
+
+ul.col3 li 
+{ 
+padding-right: : 2px !important; 
+display: : inline !important; 
+padding-left: : 2px !important; 
+float: : left !important; 
+padding-bottom: 2px !important; 
+width: : 30% !important; 
+padding-top: : 2px  !important;
+}
+table.centrada { 
+
+margin-right:auto; 
+
+margin-left:auto; 
+
+}
