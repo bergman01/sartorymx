@@ -1,44 +1,21 @@
-
-
 <?php
 
 error_reporting(0);
 
-
-
 	require_once 'lib/login.action.php';
-
-
-
 	$membership = new loginActions();
-
-
-
 	$membership->confirm_Member2(); 
 
-
-
 	include_once("lib/template.php");
-
 	include_once("lib/files.admin.php");
-
-
-
   //include_once("lib/util.php");
-
-
-
 	//include_once("lib/sql.injection.php");
-
-
-
 	include_once("lib/sanitize/sanitize.php");
 
 	
 
 	$link=conectarse();
-	$ruta_files='../mega_categorias/';
-
+	$ruta_files='../banners/';
 	if($_POST && !empty($_POST["opc"])){
 
 
@@ -54,9 +31,9 @@ error_reporting(0);
 
 
 
-	
+	$user=$_SESSION['admin_user'];
 
-    $user=$_SESSION['admin_user'];
+
 
 	$titulo='';
 
@@ -79,6 +56,7 @@ error_reporting(0);
 
 
 	$anio=date("Y");
+	$division = '';
 
 
 
@@ -90,13 +68,9 @@ error_reporting(0);
 
 	if($opcion=='UPD'){
 
-
-
 		$idreg=intval($_GET["id"]);
 
-
-
-		$query="SELECT mega_categoria_nombre,mega_categoria_imagen,mega_categoria_estatus,mega_categoria_categorias,filtro FROM mega_categorias where mega_categoria_id='$idreg' limit 1";
+		$query="SELECT nombre,imagen,estatus,url,id_division FROM banners_division where id_banner='$idreg' limit 1";
 
 
 
@@ -112,15 +86,17 @@ error_reporting(0);
 
 
 
-			$titulo = Sanitize($row[0], 'hlSafest'); 
+			$titulo = Sanitize($row[0], 'hlSafest');
+			$url = sanitize($row[3],'hlSafest'); 
 
 
 
 			$foto = $row[1];
 
-			$publicar = $row[2] ;	
-			$categoria = $row[3];
-			$filtro = $row[4];		
+			
+
+			$publicar = $row[2];
+			$division = $row[4];			
 
 
 
@@ -128,33 +104,55 @@ error_reporting(0);
 
 
 
-	}else{
+	}
+
+
+
+	else{
 
 
 
 		if($opcion=='SAVE'){
 
+
+
 			$idreg=intval($_POST["id"]);
 
+
+
 			$titulo = htmlentities(Formatear($_POST["titulo"])); 
+			$division = $_POST['division'];
+
+
 
 			$publicar=0;
-			$categorias = implode(',',$_POST["categoria"]);
-			$filtro = $_POST['filtro'];
+			$url=htmlentities($_POST['url']);
+
+
 
 			if ($_POST["publicar"]=='on'){
+
+
+
 				$publicar=1;
+
+
+
 			}
-			//$filtro = $_POST['filtro'];
 
 			$urlfile=$HTTP_POST_FILES["filefoto"];
-			$target_path = "../mega_categorias/";
+			$target_path = "../banners/";
             $target_path = $target_path . basename( $_FILES['filefoto']['name']);
 			if(!empty($_FILES['filefoto']['name'])){
 				if(move_uploaded_file($_FILES['filefoto']['tmp_name'], $target_path)) {
 				
 					$foto=$_FILES['filefoto']['name'];
+
+
+
 					mysql_query("BEGIN");
+
+
 
 					if($idreg!=0){
 
@@ -162,7 +160,7 @@ error_reporting(0);
 
 
 
-						 $tranx="update mega_categorias set mega_categoria_nombre='$titulo',mega_categoria_imagen='$foto',mega_categoria_estatus=$publicar,mega_categoria_categorias='$categorias',filtro='$filtro' where mega_categoria_id=$idreg";
+						 $tranx="update banners_division set nombre='$titulo',imagen='$foto',estatus='$publicar',url='$url',id_division = $division where id_banner=$idreg";
 
 
 
@@ -174,27 +172,55 @@ error_reporting(0);
 
 
 
-					}else{
-
-						$tranx="insert into mega_categorias (mega_categoria_nombre,mega_categoria_imagen,mega_categoria_estatus,mega_categoria_fecha_creacion,mega_categoria_categorias,filtro)  values('$titulo', '$foto',$publicar, CURDATE(),'$categorias','$filtro')";
-
-						$rtranx=mysql_query($tranx, $link);
-						$idreg = mysql_insert_id($link);
 					}
 
-					if(!$rtranx){
+
+
+					else{
+
+
+
+						$tranx="insert into banners_division (nombre,imagen,estatus,fecha_creacion,url,id_division)  values('$titulo', '$foto',$publicar, CURDATE(),'$url',$division)";
+
+
+
+						$rtranx=mysql_query($tranx, $link);
+
+
+
+						$idreg = mysql_insert_id($link);
+
+						
+
+
+
+					}
+
+					if(!$rtranx) 
+
+
+
+					{
 
 
 
 						mysql_query("ROLLBACK");
 
-						deleteFiles($ruta_files.$HTTP_POST_FILES["filefoto"]['name']);
+
+
+						//deleteFiles($ruta_files.$HTTP_POST_FILES["filefoto"]['name']);
+
+
 
 						$estatus="ERROR";
 
 
 
-					}else{
+					}
+
+
+
+					else{
 
 
 
@@ -208,13 +234,29 @@ error_reporting(0);
 
 					}
 
-				}else{
-						$estatus="ERROR";
+
+
 				}
 
 
 
-			}else{
+				else{
+
+
+
+						$estatus="ERROR";
+
+
+
+				}
+
+
+
+			}
+
+
+
+			else{
 
 
 
@@ -226,7 +268,15 @@ error_reporting(0);
 
 					//echo $foto=$_POST["hiurl"];
 
-				 $tranx="update mega_categorias set mega_categoria_nombre='$titulo',mega_categoria_estatus='$publicar',mega_categoria_categorias='$categorias',filtro='$filtro' where mega_categoria_id=$idreg";
+
+
+					 $tranx="update banners_division set nombre='$titulo',estatus='$publicar',url='$url',id_division=$division where id_banner=$idreg";
+
+
+
+								
+
+
 
 					$ca = 'MODIFICAR NOTIFiCACIÓN';
 
@@ -252,36 +302,97 @@ error_reporting(0);
 
 
 
-					$tranx="insert into mega_categorias (mega_categoria_nombre,mega_categoria_imagen,mega_categoria_estatus,mega_categoria_fecha_creacion,mega_categoria_categorias,filtro)  values('$titulo', '$foto',$publicar, CURDATE(),'$categorias','$filtro')";
+					$tranx="insert into banners_division (nombre,imagen,estatus,fecha_creacion,url,id_division)  values('$titulo', '$foto',$publicar, CURDATE(),'$url',$division)";
+
+
+
+						  
+
+
+
 					$ca = 'ALTA DE NOTIFICACIÓN';	  
+
+
+
 					$rtranx=mysql_query($tranx, $link);
+
+
+
 					$idreg = mysql_insert_id($link);
+
+
+
 				}
 
-				if(!$rtranx){
+
+
+				
+
+
+
+				if(!$rtranx) 
+
+
+
+				{
+
+
 
 					mysql_query("ROLLBACK");
+
+
+
 					$estatus="ERROR";
 
-				}else{
+
+
+				}
+
+
+
+				else{
+
+
 
 					mysql_query("COMMIT");
+
+
+
 					$estatus="OK";
 
 
 
 				}
+
+
+
 			}
+
+
+
 		}
+
+
+
 	}
-cabezal(); 
-?>
+
+
+
+cabezal(); ?>
 
 <script language="javascript" src="js/datevalid.js" type="text/javascript"></script>
+
+
+
 <script language="javascript" src="js/jquery-1.2.6.min.js" type="text/javascript"></script>
+
+
+
 <script language="javascript">
 
-function confirmar ( mensaje ) {
+
+
+function confirmar ( mensaje ) { 
 
 return confirm( mensaje ); 
 
@@ -294,14 +405,37 @@ function admRegistroupd() {
    extensiones_permitidas = new Array(".jpg",".png"); 
 
    mierror = "";
+
+
+
 	var msgError = "";
 
+
+
 	if($("#titulo").val() == ''){
+
+
+
 		msgError = msgError + "- Titulo .\n";
 
 
 
 	}
+
+	if($("#division").val() == ''){
+
+
+
+		msgError = msgError + "- Division .\n";
+
+
+
+	}
+
+
+
+
+
 	/*if($("#hiurl").val() == ''){
 
 
@@ -321,6 +455,13 @@ function admRegistroupd() {
 
 
 	}
+
+	
+
+	
+
+
+
 	if($("#piefoto").val() == ''){
 
 
@@ -402,6 +543,20 @@ function admRegistro(archivo) {
 
 
 	}
+
+	if($("#division").val() == ''){
+
+
+
+		msgError = msgError + "- Division .\n";
+
+
+
+	}
+
+
+
+
 	if($("#hiurl").val() == ''){
 
 
@@ -415,7 +570,18 @@ function admRegistro(archivo) {
 
 
 		}
+
+		
+
+
+
 	}
+
+	
+
+	
+
+
 
 	/*if($("#piefoto").val() == ''){
 
@@ -692,37 +858,63 @@ $(document).ready(function(){
 
 
 #msgContainer a{
+
+
+
 	text-decoration:none;
+
+
+
 	color:#0066FF;
+
+
+
 }
+
+
+
+
+
 
 
 div.saved{
+
+
+
 	background:#99FF99;
+
+
+
 	border-top:1px solid #339900;
+
+
+
 	border-bottom:1px solid #339900;
+
+
+
 }
 
+
+
 div.error{
+
+
+
 	background:#FFCCCC;
+
+
+
 	border-top:1px solid #FF3366;
+
+
+
 	border-bottom:1px solid #FF3366;
+
+
+
 }
-ul{
-  
-  margin-bottom:20px;
-  border-top:1px solid #ccc;
-}
-#li{
-  line-height:1.5em;
-  border-bottom:1px solid #ccc;
-  float:left;
-  display:inline;
-}
-#double li  { width:50%;} <span class="code-comment">/* 2 col */</span>
-#triple li  { width:33.333%; } <span class="code-comment">/* 3 col */</span>
-#quad li    { width:25%; } <span class="code-comment">/* 4 col */</span>
-#six li     { width:16.666%; } <span class="code-comment">/* 6 col */</span>
+
 </style>
 
 <?php body(); ?>
@@ -753,7 +945,7 @@ ul{
 
             <div class="row">
 
-  	          <div class="col-md-6"><h2>Nueva Mega Categoria</h2></div>
+  	          <div class="col-md-6"><h2>Nuevo Banner de Division</h2></div>
 
               </div>
 
@@ -773,13 +965,15 @@ ul{
 
 
 
-informaci&oacute;n. <a href="filtro_categorias_master.php" onClick="actualizarLista();">Ver lista 
+informaci&oacute;n. <a href="filtro_banners_divisiones.php" onClick="actualizarLista();">Ver lista 
 
 
 
 Actualizada.</a></div>
 
-	<?php }
+
+
+	<? }
 
 	if(isset($estatus) && $estatus == "OK" && $user=='admin'){ ?>
 
@@ -789,7 +983,7 @@ Actualizada.</a></div>
 
 
 
-informaci&oacute;n. <a href="filtro_categorias_master.php" onClick="actualizarLista();">Ver lista 
+informaci&oacute;n. <a href="filtro_banners_divisiones.php" onClick="actualizarLista();">Ver lista 
 
 
 
@@ -797,9 +991,14 @@ Actualizada.</a></div>
 
 
 
-	<?php }
+	<? }
+
+
 
 	   if(isset($estatus) && $estatus == "ERROR"){	?>
+
+
+
 	<div id="msgContainer" class="error">Ocurrio un error al intentar guardar la 
 
 
@@ -810,11 +1009,30 @@ informacion. Por favor Intenta de Nuevo.</div>
 
 	<? } ?>
 
+
+
 	<? if(!isset($estatus)){ ?><div>&nbsp;</div><? } ?>
+
+
+
 	<input type="hidden" id="id" name="id" value="<? echo $idreg; ?>" />
+
+
+
 	<input type="hidden" id="idRow" name="idRow" value="<? echo $_GET["rowId"]; ?>" />
+
+
+
 	<input type="hidden" id="opc" name="opc" value="" />
+
+    
+
     </br>
+
+
+
+
+
     <div class="table-responsive">
 
               <table class="table table-bordered table-hover table-striped tablesorter" align="center">
@@ -825,56 +1043,84 @@ informacion. Por favor Intenta de Nuevo.</div>
 
         <tr>
 
-        	<td><label>Categoria</label></td>
+        	<td><label>Banner</label></td>
 
             <td><input class="form-control" placeholder="Nombre del Documento" type="text" id="titulo" name="titulo" value="<?php echo $titulo; ?>"/></td>
 
+        </tr>
+        <tr>
+        	<td><label>Division</label></td>
+        	<td>
+        		<select name="division" class="form-control" id="division">
+        			<option value="">Seleccionar Division</option>
+
+   		<?php
+
+		include_once("lib/conexion.php");
+
+		$link=conectarse();
+
+		
+
+		$query="SELECT division_id,division_nombre FROM divisiones";
+
+		
+
+        $resultado=mysql_query($query, $link);
+
+
+
+		while($row=mysql_fetch_array($resultado)){
+
+
+
+			?>
+
+	     <option  value="<? echo html_entity_decode($row[0], ENT_QUOTES); ?>" <?php if($division == $row[0]){ echo 'selected="selected"';}?>  ><?php echo html_entity_decode($row[1], ENT_QUOTES); ?> </option>
+
+         <?php } ?>
+        		</select>
+        	</td>
         </tr>
 
         <tr>
 
         	<td><label>Archivo Relacionado</label></td>
 
+            
+
             <td>
 
            <input class="form-control" name="filefoto" id="filefoto" type="file" size="55" /></dd>
 
+
+
 	  <? if (!empty($foto)){ ?>
+
+
+
 		  <br /> Archivo Anexo: <img src="img/script.png" border="0" /> <? echo $foto ?> [<a href="<? echo $ruta_files.$foto ?>" target="_blank">Ver archivo</a>]
+
+
+
 	  <? } ?>
+
+
+
+
+
 	  <input type="hidden" id="hiurl" name="hiurl" value="<? echo $foto ?>"  /></td>
 
         </tr>
-        <!--<tr>
-        	<td><label>Categorias:</label></td>
-        	<td><ul id='double'>
 
-   		<?php
-		$query="SELECT id_categoria,categoria FROM categorias where estatus = 1 order by categoria asc";
-        $resultado=mysql_query($query, $link);
-		while($row=mysql_fetch_array($resultado)){
-			?>
+        <tr>
+        	<td>Url</td>
+        	<td><input type="text" name="url" value="<?php echo $url;?>"></td>
+        </tr>
 
-	     <li id="li"><input type="checkbox" name="categoria[]" id="categoria"  value="<?php echo $row[0];?>" <? $busca = explode(',', $categoria); if (in_array($row[0],$busca)==TRUE) { echo 'checked="checked"'; } ?>> <?php echo html_entity_decode($row[1],ENT_QUOTES);?></li>
-         <?php } ?>
-     </ul>
-     <? if(mysql_num_rows($resultado) <= 0){?>
-         <h3 style="text-align:center;" class="danger">No hay Categorias capturadas por el momento</h3>
-         <?php }?>
- </td>
-        </tr>
-        <tr>-->
-        	<tr>
-        	<td><label>Ordenar por:</label></td>
-        	<td><select name="filtro" class="form-control">
-    	<option value="0">-- Seleccionar --</option>
-        <option value="nombre asc" <?php if($filtro == 'nombre asc'){echo 'selected="selected"';}?> >Nombre del producto</option>
-		<option value="ROUND(precio_venta,2) asc" <?php if($filtro == 'ROUND(precio_venta,2) asc'){echo 'selected="selected"';}?> selected="selected">Menor a Mayor Precio</option>
-		<option value="ROUND(precio_venta,2) desc" <?php if($filtro == 'ROUND(precio_venta,2) desc'){echo 'selected="selected"';}?>>Mayor a Menor Precio</option>
-		<option value="fecha_creacion desc" <?php if($filtro == 'fecha_creacion desc'){echo 'selected="selected"';}?>>Mas nuevo</option>
-		<option value="codigo asc" <?php if($filtro == 'codigo asc'){echo 'selected="selected"';}?>>Codigo de producto</option>
-	</select></td>
-        </tr>
+       
+
+         <tr>
 
          <td><label>Publicar:</label></td>
 
@@ -889,20 +1135,24 @@ informacion. Por favor Intenta de Nuevo.</div>
    </fieldset>
 
    <?php if($opcion=="UPD"){?>
+
+   
+
     <div class="modal-footer">
 
-                    <a href="filtro_categorias_master.php" onclick="return confirmar('¿Est&aacute; seguro que desea salir,no se guardara el registro?')"><button type="button" class="btn btn-default" data-dismiss="modal" >Cancelar</button></a>
+                    <a href="filtro_banners_divisiones.php" onclick="return confirmar('¿Est&aacute; seguro que desea salir,no se guardara el registro?')"><button type="button" class="btn btn-default" data-dismiss="modal" >Cancelar</button></a>
 
                     <button type="button" class="btn btn-primary" name="guardar" id="guardar" value="Guardar" onclick="admRegistroupd(this.form.filefoto.value);">Guardar</button>
 
                 </div>
+
                 <?php } ?>
 
                 <?php if($opcion!="UPD" && $user=='admin'){?>
 
     <div class="modal-footer">
 
-                    <a href="filtro_categorias_master.php" onclick="return confirmar('¿Est&aacute; seguro que desea salir,no se guardara el registro?')"><button type="button" class="btn btn-default" data-dismiss="modal" >Cancelar</button></a>
+                    <a href="filtro_banners_divisiones.php" onclick="return confirmar('¿Est&aacute; seguro que desea salir,no se guardara el registro?')"><button type="button" class="btn btn-default" data-dismiss="modal" >Cancelar</button></a>
 
                     <button type="button" class="btn btn-primary" name="guardar" id="guardar" value="Guardar" onclick="admRegistro(this.form.filefoto.value);">Guardar</button>
 
@@ -914,7 +1164,7 @@ informacion. Por favor Intenta de Nuevo.</div>
 
     <div class="modal-footer">
 
-                    <a href="filtro_categorias_master.php" onclick="return confirmar('¿Est&aacute; seguro que desea salir,no se guardara el registro?')"><button type="button" class="btn btn-default" data-dismiss="modal" >Cancelar</button></a>
+                    <a href="filtro_banners_divisiones.php" onclick="return confirmar('¿Est&aacute; seguro que desea salir,no se guardara el registro?')"><button type="button" class="btn btn-default" data-dismiss="modal" >Cancelar</button></a>
 
                     <button type="button" class="btn btn-primary" name="guardar" id="guardar" value="Guardar" onclick="admRegistro(this.form.filefoto.value);">Guardar</button>
 
@@ -923,9 +1173,23 @@ informacion. Por favor Intenta de Nuevo.</div>
                 <?php } ?>
 
     </form>
-        </div>
+
+    
+
+
+
+               
 
         </div>
 
         </div>
-<?php footer(); ?>   
+
+        </div>
+
+              
+
+    
+
+<?php footer(); ?>
+
+    

@@ -40,11 +40,13 @@ $idm = $_GET['idm'];
 
 
 
-$query="SELECT mega_categoria_categorias FROM mega_categorias where mega_categoria_id='$idm';";
+$query="SELECT division_megacategorias,division_categorias,division_nombre FROM divisiones where division_id='$idm';";
 $resultado=mysql_query($query, $link);
 if(mysql_num_rows($resultado)>0){
   $row = mysql_fetch_row($resultado);
   $mega_categoria_id = $row[0];
+  $categorias = $row[1];
+  $division_nombre = $row[2];
 }
 
 
@@ -310,7 +312,7 @@ a.rojo:hover {
 
 </header>
 
-<?php slider(); ?>
+<?php slider_division($idm); ?>
 
 
 
@@ -378,15 +380,13 @@ a.rojo:hover {
 
 					<div class="breadcrumb text-center" style="text-aling:center">
 
-						<a href="javascript:history.back(1)"> <- Regresar </a>  Escoge una categoría:
+						<a href="javascript:history.back(1)" class="btn btn-success"> Regresar </a>  Escoge una categoría de la Division de <?php echo $division_nombre;?>:
 
 					</div>
 
 				</div>
 
 			</div>
-
-
 
 			<!-- inicio-->
 
@@ -395,13 +395,70 @@ a.rojo:hover {
 			<?php 
 			if($idm == 2){
 				$query="select id_categoria,categoria,imagen from categorias where estatus=1 order by orden asc";
+				$carpeta = 'categorias';
+				
 
 			}else{
-			 $query="select id_categoria,categoria,imagen from categorias where estatus=1 and id_categoria in ($mega_categoria_id) order by orden asc";
+
+			 $query="select mega_categoria_id,mega_categoria_nombre,mega_categoria_imagen from mega_categorias where mega_categoria_estatus=1 and mega_categoria_id in ($mega_categoria_id) order by mega_categoria_orden asc";
+			 $carpeta ='mega_categorias';
 			}
 			
 
 			$resultado=mysql_query($query, $link);
+
+			while($row=mysql_fetch_array($resultado)){ 
+
+      if($idm==2){$id_categoria = $row[0];}else{$id_megacategoria=$row[0];}
+
+      $nombre_categoria=$row[1];
+
+      $archivo=$row[2];
+			?>
+
+
+
+	<div class="span70" >
+
+					<table class="s-square">
+
+						<tbody><tr>
+
+							<td>
+
+								<?php if($idm == 2){?>
+									<a href="articulos.php?id=<?php echo $id_categoria;?>&h=<?php echo $hora;?>&f=<?php echo $fecha;?>&us=<?php echo $us;?>&cc=<?php echo $cc;?>&idd=<?php echo $idm;?>">
+									<?php
+								}else{ ?>
+								<a href="articulos.php?idm=<?php echo $id_megacategoria;?>&id=<?php echo $id_categoria;?>&h=<?php echo $hora;?>&f=<?php echo $fecha;?>&us=<?php echo $us;?>&cc=<?php echo $cc;?>&idd=<?php echo $idm;?>">
+							<?php } ?>
+
+									<img src="<?php echo $carpeta;?>/<?php echo $archivo; ?>" alt="Boligrafos">
+
+								</a>
+
+							</td>
+
+						
+
+							
+
+					</tbody></table>
+
+
+
+				</div>
+
+
+
+
+				    <?php
+
+        }
+
+        if($categorias != ''){
+        	$query="select id_categoria,categoria,imagen from categorias where estatus=1 and id_categoria in ($categorias) order by orden asc";
+        	$resultado=mysql_query($query, $link);
 
 			while($row=mysql_fetch_array($resultado)){ 
 
@@ -411,14 +468,9 @@ a.rojo:hover {
 
       $archivo=$row[2];
 
+        ?>
 
-
-
-			?>
-
-
-
-	<div class="span70">
+        <div class="span70">
 
 					<table class="s-square">
 
@@ -426,7 +478,7 @@ a.rojo:hover {
 
 							<td>
 
-								<a href="articulos.php?id=<?php echo $id_categoria;?>&h=<?php echo $hora;?>&f=<?php echo $fecha;?>&us=<?php echo $us;?>&cc=<?php echo $cc;?>">
+								<a href="articulos.php?id=<?php echo $id_categoria;?>&h=<?php echo $hora;?>&f=<?php echo $fecha;?>&us=<?php echo $us;?>&cc=<?php echo $cc;?>&idd=<?php echo $idm;?>">
 
 									<img src="categorias/<?php echo $archivo; ?>" alt="Boligrafos">
 
@@ -443,12 +495,11 @@ a.rojo:hover {
 
 
 				</div>
+				<?php
+			}
+		}
+		?>
 
-				    <?php
-
-        }
-
-        ?>
 
 								<!--<div class="o-line strong"></div>-->
 

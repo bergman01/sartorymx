@@ -902,7 +902,7 @@ cb[i].checked = false;
 
                   $imagen='no_publicado.gif';
 
-                  if($row['publicar']=='S'){
+                  if($row['promo']==1){
 
                     $imagen='publicado.gif';
 
@@ -911,7 +911,7 @@ cb[i].checked = false;
                   if($imagen=='no_publicado.gif'){
 
                     $class='success';
-
+ 
                   }
 
                 ?>

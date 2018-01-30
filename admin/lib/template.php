@@ -117,20 +117,30 @@ function body(){ ?>
            $busca = explode(',', $permiso); if (in_array(1,$busca)==TRUE) {  ?>
             <li><a style="color: #ffffff;" href="usuarios.php"><i class="fa fa-user"></i> Administradores</a></li>
             <?php } ?>
+            <?php $busca = explode(',', $permiso); if (in_array(7,$busca)==TRUE) {  ?>
+            <li><a style="color: #ffffff;" href="filtro_proveedores.php"><i class="fa fa-book"></i> Proveedores</a></li>
+            <?php }?>
+
+            <?php $busca = explode(',', $permiso); if (in_array(13,$busca)==TRUE) {  ?>
+            <li><a style="color: #ffffff;" href="filtro_clientes.php"><i class="fa fa-book"></i> Clientes</a></li>
+            <?php }?>
             <?php 
            $busca = explode(',', $permiso); if (in_array(1,$busca)==TRUE) {  ?>
             <li><a style="color: #ffffff;" href="visitantes.php"><i class="fa fa-user"></i> Visitantes</a></li>
             <?php } ?>
-            <?php $busca = explode(',', $permiso); if (in_array(7,$busca)==TRUE) {  ?>
-            <li><a style="color: #ffffff;" href="filtro_proveedores.php"><i class="fa fa-book"></i> Proveedores</a></li>
-            <?php }?>
-            <?php $busca = explode(',', $permiso); if (in_array(13,$busca)==TRUE) {  ?>
-            <li><a style="color: #ffffff;" href="filtro_clientes.php"><i class="fa fa-book"></i> Clientes</a></li>
-            <?php }?>
                </ul>
                </li>
            <li><a href="#"><i class="fa fa-bookmark"></i> Artículos</a>
            <ul>
+            <?php $busca = explode(',', $permiso); if (in_array(14,$busca)==TRUE) {  ?>
+            <li><a style="color: #ffffff;" href="filtro_divisiones.php"><i class="fa fa-outdent"></i> Divisiones</a></li>
+            <?php }?>
+            <?php $busca = explode(',', $permiso); if (in_array(15,$busca)==TRUE) {  ?>
+            <li><a style="color: #ffffff;" href="filtro_categorias_master.php"><i class="fa fa-outdent"></i> Mega Categorias</a></li>
+            <?php }?>
+            <?php $busca = explode(',', $permiso); if (in_array(6,$busca)==TRUE) {  ?>
+            <li><a style="color: #ffffff;" href="filtro_categorias.php"><i class="fa fa-outdent"></i> Categorías</a></li>
+            <?php }?>
              <?php $busca = explode(',', $permiso); if (in_array(2,$busca)==TRUE) {  ?>
             <li><a style="color: #ffffff;" href="filtro_articulos.php"><i class="fa fa-bookmark"></i> Artículos</a></li>
             <?php }?>
@@ -144,17 +154,16 @@ function body(){ ?>
             <li><a style="color: #ffffff;" href="filtro_tag.php"><i class="fa fa-tags"></i> Tags</a></li>
             <?php }?>
             <?php $busca = explode(',', $permiso); if (in_array(11,$busca)==TRUE) {  ?>
+            <li><a style="color: #ffffff;" href="filtro_megacategorias_masivo.php"><i class="fa fa-tags"></i> Mega Categorias multiples</a></li>
+            <?php }?>
+            <?php $busca = explode(',', $permiso); if (in_array(11,$busca)==TRUE) {  ?>
             <li><a style="color: #ffffff;" href="filtro_categorias_masivo.php"><i class="fa fa-tags"></i> Categorias multiples</a></li>
             <?php }?>
             <?php $busca = explode(',', $permiso); if (in_array(12,$busca)==TRUE) {  ?>
             <li><a style="color: #ffffff;" href="filtro_eliminalizacion.php"><i class="fa fa-exchange"></i> Eliminalización</a></li>
             <?php }?>
-            <?php $busca = explode(',', $permiso); if (in_array(6,$busca)==TRUE) {  ?>
-            <li><a style="color: #ffffff;" href="filtro_categorias.php"><i class="fa fa-outdent"></i> Categorías</a></li>
-            <?php }?>
-            <?php $busca = explode(',', $permiso); if (in_array(14,$busca)==TRUE) {  ?>
-            <li><a style="color: #ffffff;" href="filtro_categorias_master.php"><i class="fa fa-outdent"></i> Divisiones</a></li>
-            <?php }?>
+            
+            
            </ul></li>
            <li><a href="#"><i class="fa fa-exchange"></i> Cotizaciones</a>
             <ul>
@@ -175,6 +184,9 @@ function body(){ ?>
               <ul>
                  <?php $busca = explode(',', $permiso); if (in_array(5,$busca)==TRUE) {  ?>
             <li><a style="color: #ffffff;" href="filtro_banners.php"><i class="fa fa-picture-o"></i> Banners</a></li>
+            <?php }?>
+            <?php $busca = explode(',', $permiso); if (in_array(5,$busca)==TRUE) {  ?>
+            <li><a style="color: #ffffff;" href="filtro_banners_divisiones.php"><i class="fa fa-picture-o"></i> Banners Divisiones</a></li>
             <?php }?>
               </ul>
             </li>

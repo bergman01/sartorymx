@@ -93,14 +93,14 @@ return confirm( mensaje );
    <div id="page-wrapper">
         <div class="row">
           <div class="col-sm-8 col-md-6 col-lg-12 col-xs-14">
-            <h2 style="color:#FE0000;text-align: left;">ADMINISTRADOR DE MEGA CATEGORIAS</h2>
+            <h2 style="color:#FE0000;text-align: left;">ADMINISTRADOR DE DIVISIONES</h2>
           </div>
         </div>
 		<div class="row">
           <div class="col-sm-12 col-md-12 col-lg-12 col-xs-14">
             <div class="row">
-  	          <div class="col-sm-8 col-md-6 col-lg-2 col-xs-6"><h1>Mega Categorias</h1></div>
-              <div class="col-sm-4 col-md-6 col-lg-10 col-xs-2" align="right"><h2><a href="admin.si.mega.categorias.php?opc=ADD&id=0" class="btn btn-success">Agregar Mega Categoria</a></h2></div>
+  	          <div class="col-sm-8 col-md-6 col-lg-2 col-xs-6"><h1>Divisiones</h1></div>
+              <div class="col-sm-4 col-md-6 col-lg-10 col-xs-2" align="right"><h2><a href="admin.si.divisiones.php?opc=ADD&id=0" class="btn btn-success">Agregar Division</a></h2></div>
             </div>
             <div class="table-responsive">
               <table class="table table-bordered table-hover table-striped tablesorter">
@@ -117,7 +117,7 @@ return confirm( mensaje );
                 <tbody>
                 <?php
 							$link=conectarse_servicios();
-							$query="SELECT * FROM mega_categorias order by mega_categoria_orden asc;";
+							$query="SELECT * FROM divisiones order by division_orden asc;";
 							$resultado=mysql_query($query, $link);
 							//echo $resultado;
 							$icont=0;
@@ -133,7 +133,7 @@ return confirm( mensaje );
 								}
 									$laclase=($icont%2==0?"fila_par":"fila_impar");
 									$imagen='no_publicado.gif';
-									if($row['mega_categoria_estatus']==1){
+									if($row['division_estatus']==1){
 										$imagen='publicado.gif';
 									}
 									if($imagen=='no_publicado.gif'){
@@ -146,15 +146,15 @@ return confirm( mensaje );
 									}
 								?>
                   <form action="agregar_orden_mega.php" method="post">
-                  <input type="hidden" name="idcat[]" value="<?php echo $row['mega_categoria_id'];?>">
+                  <input type="hidden" name="idcat[]" value="<?php echo $row['division_id'];?>">
                   <tr class="<?php echo $class; ?>" id="row<? echo $icont; ?>">
-                    <td style="width: 10px"><a href="admin.si.mega.categorias.php?<? echo "id=".$row['mega_categoria_id']."&opc=UPD"; ?>&rowId=row<? echo $icont; ?>"><img src="img/editar.gif" border="0"/><? echo $row['orden']; ?></a></td>
-                    <td ><a href="../mega_categorias/<?php echo $row['mega_categoria_imagen']?>" target="_blank" border="0" /><? echo html_entity_decode($row['mega_categoria_nombre'], ENT_QUOTES); ?></a></td>                    <!--<td><img src="../categorias/<?php echo $row['imagen']?>" border="0" /></td>-->
+                    <td style="width: 10px"><a href="admin.si.divisiones.php?<? echo "id=".$row['division_id']."&opc=UPD"; ?>&rowId=row<? echo $icont; ?>"><img src="img/editar.gif" border="0"/><? echo $row['orden']; ?></a></td>
+                    <td ><a href="../divisiones/<?php echo $row['division_imagen']?>" target="_blank" border="0" /><? echo html_entity_decode($row['division_nombre'], ENT_QUOTES); ?></a></td>                    <!--<td><img src="../categorias/<?php echo $row['imagen']?>" border="0" /></td>-->
 
-                    <td><a href="desactivar_links.php?link=<?php echo $row['link'];?>&id=<?php echo $row['mega_categoria_id']; ?>"><?php echo $pal;?> link</td>
+                    <td><a href="desactivar_link.php?link=<?php echo $row['link'];?>&id=<?php echo $row['division_id']; ?>"><?php echo $pal;?> link</td>
                     <td style="width: 10px"><img src="img/<? echo $imagen; ?>" border="0" /></td>
-                    <td style="width: 10px"><input  type="number" min="00" max="9999" name="orden[]" value="<?php echo $row['mega_categoria_orden'];?>" style="width: 45px !important" size="5"></td>
-                    <td style="width: 10px"><a href="eliminar_mega_categoria.php?id=<?php echo $row['mega_categoria_id']; ?>" onclick="return confirmar('¿Está seguro que desea eliminar el registro?')"><img src="img/delete.gif" border="0"  title="Eliminar Seccion"  style="cursor:pointer;"  /></a></td>
+                    <td style="width: 10px"><input  type="number" min="00" max="9999" name="orden[]" value="<?php echo $row['division_orden'];?>" style="width: 45px !important" size="5"></td>
+                    <td style="width: 10px"><a href="eliminar_division.php?id=<?php echo $row['division_id']; ?>" onclick="return confirmar('¿Está seguro que desea eliminar el registro?')"><img src="img/delete.gif" border="0"  title="Eliminar Seccion"  style="cursor:pointer;"  /></a></td>
                   </tr>
                   <? }
 							}
@@ -164,7 +164,7 @@ return confirm( mensaje );
                 </tbody>
               </table>
               <? if(mysql_num_rows($resultado) <= 0){?>
-         <h1 style="text-align:center;" class="danger">No hay Mega Categorias capturadas por el momento</h1>
+         <h1 style="text-align:center;" class="danger">No hay Divisiones capturadas por el momento</h1>
          <?php }?>
             </div>
           </div>

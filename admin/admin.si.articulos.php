@@ -52,7 +52,7 @@ return number_format($venta*$porciento/100 ,$decimales);
 
 
 		$idreg=intval($_GET["id"]);
-		$query="SELECT codigo,categoria,nombre,precio_venta,id_proveedor,imagen,estatus,descripcion,personalizado,tags,costos,utilidad,agotado,existencia,showroom FROM articulos where id_articulo=$idreg limit 1";
+		$query="SELECT codigo,categoria,nombre,precio_venta,id_proveedor,imagen,estatus,descripcion,personalizado,tags,costos,utilidad,agotado,existencia,showroom,mega_categoria FROM articulos where id_articulo=$idreg limit 1";
 		$resultado=mysql_query($query, $link);
 		if(mysql_num_rows($resultado)>0){
 
@@ -74,6 +74,7 @@ return number_format($venta*$porciento/100 ,$decimales);
 			$agotado =$row[12];
 			$existencia = $row[13];
 			$showroom = $row[14];
+			$mega_categoria = $row[15];
 		}
 	}else{
 		if($opcion=='SAVE'){
@@ -121,6 +122,7 @@ return number_format($venta*$porciento/100 ,$decimales);
 			if($_POST["showroom"]=='on'){
 				$showroom=1;
 			}
+			$mega_categoria = implode(',',$_POST["mega_categoria"]);
 
 
 
@@ -144,7 +146,7 @@ return number_format($venta*$porciento/100 ,$decimales);
 
 
 
-						 $tranx="update articulos set codigo='$titulo',categoria='$categoria',nombre='$producto',precio_venta='$venta',id_proveedor=$proveedor,imagen='$foto',estatus='$publicar', descripcion='$descripcion',personalizado='$tipo',tags='$tag',costos='$costo',utilidad='$utilidad',agotado='$agotado',existencia='$existencia',showroom='$showroom' where id_articulo=$idreg";			
+						 $tranx="update articulos set codigo='$titulo',categoria='$categoria',nombre='$producto',precio_venta='$venta',id_proveedor=$proveedor,imagen='$foto',estatus='$publicar', descripcion='$descripcion',personalizado='$tipo',tags='$tag',costos='$costo',utilidad='$utilidad',agotado='$agotado',existencia='$existencia',showroom='$showroom',mega_categoria = '$mega_categoria' where id_articulo=$idreg";			
 
 
 
@@ -160,7 +162,7 @@ return number_format($venta*$porciento/100 ,$decimales);
 
 
 
-						$tranx="insert into articulos (codigo,categoria,nombre,precio_venta,id_proveedor,fecha_creacion,imagen,estatus,descripcion,personalizado,tags,costos,utilidad,agotado,existencia,showroom) values('$titulo','$categoria','$producto','$venta',$proveedor,CURDATE(),'$foto',$publicar,'$descripcion','$tipo','$tag','$costo','$utilidad',$agotado,'$existencia',$showroom)";
+						$tranx="insert into articulos (codigo,categoria,nombre,precio_venta,id_proveedor,fecha_creacion,imagen,estatus,descripcion,personalizado,tags,costos,utilidad,agotado,existencia,showroom,mega_categoria) values('$titulo','$categoria','$producto','$venta',$proveedor,CURDATE(),'$foto',$publicar,'$descripcion','$tipo','$tag','$costo','$utilidad',$agotado,'$existencia',$showroom,'$mega_categoria')";
 
 
 
@@ -238,7 +240,7 @@ return number_format($venta*$porciento/100 ,$decimales);
 
 
 
-					$tranx="update articulos set codigo='$titulo',categoria='$categoria',nombre='$producto',precio_venta='$venta',id_proveedor=$proveedor,estatus='$publicar', descripcion='$descripcion',personalizado='$tipo',tags='$tag',costos='$costo',utilidad='$utilidad',agotado='$agotado',existencia='$existencia',showroom='$showroom' where id_articulo=$idreg";							
+					$tranx="update articulos set codigo='$titulo',categoria='$categoria',nombre='$producto',precio_venta='$venta',id_proveedor=$proveedor,estatus='$publicar', descripcion='$descripcion',personalizado='$tipo',tags='$tag',costos='$costo',utilidad='$utilidad',agotado='$agotado',existencia='$existencia',showroom='$showroom',mega_categoria='$mega_categoria' where id_articulo=$idreg";							
 
 
 
@@ -266,18 +268,7 @@ return number_format($venta*$porciento/100 ,$decimales);
 
 
 
-					$tranx="insert into articulos (codigo,categoria,nombre,precio_venta,id_proveedor,fecha_creacion,estatus,descripcion,personalizado,tags,costos,utilidad,agotado,existencia,showroom)
-
-
-
-							  values('$titulo','$categoria','$producto','$venta',$proveedor,CURDATE(),$publicar,'$descripcion','$tipo','$tag','$costo','$utilidad',$agotado,'$existencia',$showroom)";
-
-
-
-						  
-
-
-
+					$tranx="insert into articulos (codigo,categoria,nombre,precio_venta,id_proveedor,fecha_creacion,estatus,descripcion,personalizado,tags,costos,utilidad,agotado,existencia,showroom,mega_categoria) values('$titulo','$categoria','$producto','$venta',$proveedor,CURDATE(),$publicar,'$descripcion','$tipo','$tag','$costo','$utilidad',$agotado,'$existencia',$showroom,'$mega_categoria')";
 					$ca = 'ALTA DE NOTIFICACIÓN';	  
 
 
@@ -761,6 +752,41 @@ informacion. Por favor Intenta de Nuevo.</div>
         	<td><label>Código</label></td>
 
             <td><input class="form-control" placeholder="Codigo del Articulo" type="text" id="titulo" name="titulo" value="<?php echo html_entity_decode($titulo, ENT_QUOTES); ?>"/></td>
+
+        </tr>
+
+        <tr>
+
+        	<td><label>Mega Categoría</label></td>
+
+            <td><ul id='double'>
+
+   		<?php
+
+		include_once("lib/conexion.php");
+
+		$link=conectarse();
+
+		
+
+		$query="SELECT mega_categoria_id,mega_categoria_nombre FROM mega_categorias where mega_categoria_estatus = 1 order by mega_categoria_nombre asc";
+
+		
+
+        $resultado=mysql_query($query, $link);
+
+
+
+		while($row=mysql_fetch_array($resultado)){
+
+
+
+			?>
+
+	     <li id="li"><input type="checkbox" name="mega_categoria[]" id="mega_categoria"  value="<?php echo $row[0];?>" <? $busca = explode(',', $mega_categoria); if (in_array($row[0],$busca)==TRUE) { echo 'checked="checked"'; } ?>> <?php echo html_entity_decode($row[1],ENT_QUOTES);?></li>
+
+
+         <?php } ?></ul></td>
 
         </tr>
 

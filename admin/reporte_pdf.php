@@ -1,5 +1,5 @@
 <?php
-
+set_time_limit(300);
 
 
 include_once("lib/conexion.php"); 

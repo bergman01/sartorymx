@@ -485,7 +485,8 @@ informacion. Por favor Intenta de Nuevo.</div>
 				<li><input type="checkbox" name="permisos[]"  value="10" <? $busca = explode(',', $permisos); if (in_array(10,$busca)==TRUE) { echo 'checked="checked"'; } ?>>Tags</li>
 				<li><input type="checkbox" name="permisos[]"  value="11" <? $busca = explode(',', $permisos); if (in_array(11,$busca)==TRUE) { echo 'checked="checked"'; } ?>>Cambio Categoria</li>
 				<li><input type="checkbox" name="permisos[]"  value="12" <? $busca = explode(',', $permisos); if (in_array(12,$busca)==TRUE) { echo 'checked="checked"'; } ?>>Eliminación</li>
-				<li><input type="checkbox" name="permisos[]"  value="14" <? $busca = explode(',', $permisos); if (in_array(14,$busca)==TRUE) { echo 'checked="checked"'; } ?>>Mega Categorias</li>
+				<li><input type="checkbox" name="permisos[]"  value="14" <? $busca = explode(',', $permisos); if (in_array(14,$busca)==TRUE) { echo 'checked="checked"'; } ?>>Divisiones</li>
+				<li><input type="checkbox" name="permisos[]"  value="17" <? $busca = explode(',', $permisos); if (in_array(17,$busca)==TRUE) { echo 'checked="checked"'; } ?>>Mega Categorias</li>
 				<li><input type="checkbox" name="permisos[]"  value="15" <? $busca = explode(',', $permisos); if (in_array(15,$busca)==TRUE) { echo 'checked="checked"'; } ?>>Ventas</li>
 				<li><input type="checkbox" name="permisos[]"  value="16" <? $busca = explode(',', $permisos); if (in_array(16,$busca)==TRUE) { echo 'checked="checked"'; } ?>>No concretadas</li>
 			</ul>

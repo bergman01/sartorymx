@@ -490,6 +490,7 @@ cb[i].checked = false;
 									$tipo=html_entity_decode($row['persona'], ENT_QUOTES);
 
 									$notas_personalizacion = htmlspecialchars_decode($row['notas_personalizacion'],ENT_QUOTES);
+                  $dest = $row['destinatario'];
 
 
 
@@ -909,7 +910,7 @@ cb[i].checked = false;
 
 
 
-       <option  value="<? echo $row[0]; ?>" ?><?php echo $row[1]; ?> </option>
+       <option  value="<? echo $row[0]; ?>" <?php if($row[1] == $dest){ echo 'selected="selected"';} ?> ><?php echo $row[1]; ?> </option>
 
 
 

@@ -379,7 +379,7 @@ a.rojo:hover {
 
 			
 
-			$query="select mega_categoria_id,mega_categoria_nombre,mega_categoria_imagen from mega_categorias where mega_categoria_estatus=1 order by mega_categoria_orden asc";
+			$query="select division_id,division_nombre,division_imagen,link from divisiones where division_estatus=1 order by division_orden asc";
 
 			$resultado=mysql_query($query, $link);
 
@@ -390,6 +390,7 @@ a.rojo:hover {
       $nombre_categoria=$row[1];
 
       $archivo=$row[2];
+      $lin = $row[3];
 
 			?>
 
@@ -402,9 +403,9 @@ a.rojo:hover {
 
 							<td>
 
-								<a href="categorias.php?idm=<?php echo $id_categoria;?>&h=<?php echo $hora;?>&f=<?php echo $fecha;?>&us=<?php echo $us;?>&cc=<?php echo $cc;?>">
+								<a <?php if($lin==1){ ?> href="#" <?php }else{ ?> href="categorias.php?idm=<?php echo $id_categoria;?>&h=<?php echo $hora;?>&f=<?php echo $fecha;?>&us=<?php echo $us;?>&cc=<?php echo $cc;?>"<?php } ?> >
 
-									<img src="mega_categorias/<?php echo $archivo; ?>" alt="<?php echo $nombre_categoria;?>" style="display: block !important;">
+									<img src="divisiones/<?php echo $archivo; ?>" alt="<?php echo $nombre_categoria;?>" style="display: block !important;">
 
 								</a>
 

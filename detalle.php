@@ -2541,7 +2541,7 @@ return confirm( mensaje );
 
 
 
-                     echo $query2="select * from personalizacion where idpersonalizacion in(".$persona.");";
+                     $query2="select * from personalizacion where idpersonalizacion in(".$persona.");";
 
 
 

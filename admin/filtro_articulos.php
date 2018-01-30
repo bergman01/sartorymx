@@ -36,30 +36,10 @@ cabezal(); ?>
 
 .new_row{
 
-
-
-
-
-
-
 	background:#FFFFCC;
-
-
-
-
-
-
-
 }
 
 .tabla_encabezado {
-
-
-
-
-
-
-
 	background-color:#D1D1D1;
 
 	color:#000000;
@@ -81,277 +61,55 @@ cabezal(); ?>
 }
 
 #msgContainer{
-
-
-
-
-
-
-
 	padding-top:10px;
-
-
-
-
-
-
-
 	padding-bottom:10px;
-
-
-
-
-
-
-
 	text-align:center;
-
-
-
-
-
-
-
 	font-family:Verdana, Arial, Helvetica, sans-serif;
-
-
-
-
-
-
-
 	font-size:12px;
-
-
-
-
-
-
-
 	width:100%;
-
-
-
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #msgContainer a{
 
 
-
-
-
-
-
 	text-decoration:none;
-
-
-
-
-
-
-
 	color:#0066FF;
-
-
-
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 div.saved{
 
 
-
-
-
-
-
 	background:#99FF99;
-
-
-
-
-
-
-
 	border-top:1px solid #339900;
-
-
-
-
-
-
-
 	border-bottom:1px solid #339900;
-
-
-
-
-
-
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 div.error{
-
-
-
-
-
-
-
 	background:#FFCCCC;
-
-
-
-
-
-
-
 	border-top:1px solid #FF3366;
-
-
-
-
-
-
-
 	border-bottom:1px solid #FF3366;
-
-
-
-
-
-
-
 }
 
 
 
 .form-control{
-
-
-
 	width:auto;
-
-
-
 }
-
-
-
-
-
-
 
 .btn-danger {
 
     color: #fff;
-
     background-color: #FE0000;
-
     border-color: #BD0B06;
 
 }
-
-
-
-
-
-
-
-
-
-
-
 </style>
 
-
-
-
-
-
-
 <link rel="stylesheet" type="text/css" href="css/rounded_borders.css">
-
-
-
-
-
-
-
-
-
-
-
 <script language="javascript" src="js/jquery-1.2.6.min.js" type="text/javascript"></script>
-
-
-
-
-
-
-
 <script language="javascript" src="js/get2post.js" type="text/javascript"></script>
-
-
-
-
-
-
-
 <script language="javascript">
 
 
@@ -371,48 +129,17 @@ function fEliminarSeccion(idseccion){
 }
 
 
-
-
-
-
-
-
-
-
 function pregunta(){ 
-
-
-
     if (confirm('¿Está seguro de querer eliminar este ddepartamento?')){ 
-
-
-
        document.v.submit() 
-
-
-
     } 
-
-
-
 } 
 
 
 
 function confirmar ( mensaje ) { 
-
-
-
 return confirm( mensaje ); 
-
-
-
 } 
-
-
-
-
-
 
 
 //<![CDATA[
@@ -428,11 +155,6 @@ var marca = document.getElementById('marcar');
 
 
 var cb = document.getElementsByName('seleccion[]');
-
-
-
- 
-
 
 
 for (i=0; i<cb.length; i++){
@@ -479,221 +201,85 @@ cb[i].checked = false;
 
 
 
-<?	
-
-
-
-
-
-
-
+<?php
    body();?>
 
 
 
    <div id="page-wrapper">
-
-
-
-
-
-
-
         <div class="row">
-
-
-
           <div class="col-sm-8 col-md-6 col-lg-10 col-xs-14">
-
-
-
             <h2  style="color:#FE0000; text-align: left;">ADMINISTRADOR DE ARTICULOS PROMOCIONALES</h2>
-
-
-
             <br/>
-
-
-
           </div>
-
-
-
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		<div class="row">
-
-
-
           <div class="col-sm-12 col-md-12 col-lg-12 col-xs-14">
-
-
-
             <div class="row">
-
-
-
   	          <div class="col-sm-8 col-md-6 col-lg-2 col-xs-6"></div>
-
-
-
   	          <?php
-
-
-
   	          $link=conectarse();
-
-
-
-		
-
-
-
 		$query="SELECT precio_publicado FROM articulos limit 1";
-
-
-
-		
-
-
-
         $resultado=mysql_query($query, $link);
-
-
-
-
-
-
-
 		while($row=mysql_fetch_array($resultado)){
-
-
-
 			$visible=$row[0];
-
-
-
-
-
-
-
 		}
 
   	          ?> 
-
-
-
-  	          
-
-
-
               <div class="col-sm-8 col-md-6 col-lg-12 col-xs-6" align="left" style="margin-left: 10px;"><h2><a href="precios.php?id=<?php echo $visible;?>" class="btn btn-success">Publicar | Despublicar Precios</a> <a href="admin.si.articulos.php?opc=ADD&id=0" class="btn btn-danger">Agregar Articulo</a> </h2></div>
-
-
-
             </div>
-
-
-
             <div class="table-responsive">
-
-
-
             <form action="" method="post"> 
-
-
-
              <h2>Buscador general</h2>
-
-
-
              <table class="table table-bordered table-hover table-striped tablesorter">
 
 
 
             	<tr>
-
-
-
              		<td><strong>Codigo</strong><br/><input type="text" name="codigo"></td>
-
-
-
              		<td><strong>Nombre</strong><br/><input type="text" name="palabra"></td>
-
-
-
             		<td><strong>Categoria</strong><select class="form-control" name="categoria" id="categoria">
-
-
-
                                      <option value="">Seleccionar Categoria</option>
-
-
-
    		<?php
-
-
-
 		$link=conectarse();
-
-
-
-		
-
-
-
 		$query="SELECT id_categoria,categoria FROM categorias where estatus = 1 order by categoria asc";
-
-
-
-		
-
-
-
         $resultado=mysql_query($query, $link);
-
-
-
-
-
-
-
 		while($row=mysql_fetch_array($resultado)){
-
-
-
-
-
-
-
 			?>
-
-
-
 	     <option  value="<? echo html_entity_decode($row[0], ENT_QUOTES); ?>" <?php if($categoria == $row[0]){ echo 'selected="selected"';} ?> ><?php echo html_entity_decode($row[1], ENT_QUOTES); ?></option>
-
-
-
          <?php } ?>
 
 
 
          </select></td>
+         <td><strong>Mega Categoria</strong><select class="form-control" name="categoria" id="categoria">
+                                     <option value="">Seleccionar Categoria</option>
+   		<?php
+		$link=conectarse();
+		$query="SELECT id_categoria,categoria FROM categorias where estatus = 1 order by categoria asc";
+        $resultado=mysql_query($query, $link);
+		while($row=mysql_fetch_array($resultado)){
+			?>
+	     <option  value="<? echo html_entity_decode($row[0], ENT_QUOTES); ?>" <?php if($categoria == $row[0]){ echo 'selected="selected"';} ?> ><?php echo html_entity_decode($row[1], ENT_QUOTES); ?></option>
+         <?php } ?>
+
+
+
+         </select></td>
+         <!--<td><strong>Division</strong><select class="form-control" name="categoria" id="categoria">
+                                     <option value="">Seleccionar Categoria</option>
+   		<?php
+		$link=conectarse();
+		$query="SELECT id_categoria,categoria FROM categorias where estatus = 1 order by categoria asc";
+        $resultado=mysql_query($query, $link);
+		while($row=mysql_fetch_array($resultado)){
+			?>
+	     <option  value="<? echo html_entity_decode($row[0], ENT_QUOTES); ?>" <?php if($categoria == $row[0]){ echo 'selected="selected"';} ?> ><?php echo html_entity_decode($row[1], ENT_QUOTES); ?></option>
+         <?php } ?>
+
+
+
+         </select></td>-->
 
          <td><strong>Etiquetas</strong><select class="form-control" name="etiqueta" id="etiqueta">
 
